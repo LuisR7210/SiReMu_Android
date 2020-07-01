@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "mx.uv.loginMS";
+option java_outer_classname = "LoginProto";
+option objc_class_prefix = "LMS";
+
+package loginMS;
+
+service Login {
+  rpc IniciarSesion(Cuenta) returns (RespuestaLogin){}
+
+  rpc BuscarCancion (Cancion) returns (stream Pedazo) {}
+}
+
+message Cuenta {
+  string usuario = 1;
+  string contra = 2;
+}
+
+message RespuestaLogin {
+  bool respuesta = 1;
+}
+
+message Cancion {
+  int32 id = 1;
+}
+
+message Pedazo {
+	bytes contenido = 1;
+}

@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "mx.uv.manejoListas";
+option java_outer_classname = "ListasProto";
+option objc_class_prefix = "ML";
+
+package mnjListas;
+
+service ManejoListas {
+  rpc AgregarQuitarCancionesLista(ListaAA) returns (RespuestaRegistro);
+  rpc AgregarListaAMeGusta (ListaAG) returns (RespuestaRegistro);
+  rpc BuscarListas(NombreLista) returns (ListaListas);
+  /*rpc ConsultarAparicion(idCancion) returns (ListaListas){}*/
+  rpc ConsultarLista(ListaReproduccion) returns (ListaCanciones);
+  /*rpc ConsultarListasPopulares(IdUsuario) returns (ListaCanciones){}
+  rpc ConsultarMisCanciones(IdUsuario) returns(ListaCanciones){}*/
+  rpc ConsultarMisListas(IdUsuario) returns(ListaListas);
+  rpc ConsultarMisListasAgregadas(IdUsuario) returns(ListaListas);
+  rpc ConsultarMisListasDefault(IdUsuario) returns(ListaListas);
+  rpc CrearListaReproduccion(ListaAG) returns(RespuestaRegistro);
+}
+
+message ListaAG {
+  int32 idUsuario = 1;
+  ListaReproduccion listaAAgregar = 2;
+}
+
+message RespuestaRegistro {
+  bool respuesta = 1;
+  string codigoError = 2;
+}
+
+message ListaAA {
+  int32 idUsuario = 1;
+  int32 idLista = 2;
+  repeated int32 idCanciones = 3;
+  bool agregar = 4;
+}
+
+message NombreLista {
+  string nombre = 1;
+}
+
+message ListaListas {
+  repeated ListaReproduccion listas = 1;
+}
+
+message ListaCanciones {
+  repeated Cancion canciones = 1;
+}
+
+message IdUsuario {
+  int32 id = 1;
+}
+
+message CancionPP {
+  bytes contenido = 1;
+}
+
+message Album {
+  int32 id = 1;
+  string compania = 2;
+  string fechaLanzamiento = 3;
+  bytes ilustracion = 4;
+  string nombre = 5;
+}
+
+message Cancion {
+  int32 id = 1;
+  string artista = 2;
+  string duracion = 3;
+  bool esPRomocion = 4;
+  bool esPublica = 5;
+  string genero = 6;
+  int32 likes = 7;
+  string nombre = 8;
+  int32 idAlbum = 9;
+  string nombreAlbum = 10;
+}
+
+message ListaReproduccion {
+  int32 id = 1;
+  string descripcion = 2;
+  bool esDefault = 3;
+  bool esPublica = 4;
+  bytes ilustracion = 5;
+  int32 likes = 6;
+  string nombre = 7;
+  int32 idCreador = 8;
+  string nombreCreador = 9;
+}
+
