@@ -1,0 +1,42 @@
+# Este es el primer inento de crear un action en github para crear un apk a partir de la aplicacion de SIREMU cada
+# vez que se ejecuta un push en la rama master
+
+name: Crear y publicar APK
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: CheckOut Code
+      uses: actions/checkout@v1
+
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Make Gradle executable
+      run: chmod +x ./gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build
+
+    - name: Build Debug APK
+      run: ./gradlew assembleRelease
+
+    - name: List artifact APK
+      run: ls -la
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: app-debug.apk
+        path: ./app/build/outputs/apk/release
