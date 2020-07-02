@@ -47,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btn1 = (Button) findViewById(R.id.a2);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), subirCancion.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
     }
 
     private static class GrpcTask extends AsyncTask<Void, Void, String> {

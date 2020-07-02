@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="opciones">
+        <item>Bachata</item>
+        <item>Baladas</item>
+        <item>Blues</item>
+        <item>Bolero</item>
+        <item>Bosa Nova</item>
+        <item>Celta</item>
+        <item>Clásica</item>
+        <item>Corrido</item>
+        <item>Country</item>
+        <item>Criollo</item>
+        <item>Cumbia</item>
+        <item>Disco</item>
+        <item>Dubstep</item>
+        <item>Electrónica</item>
+        <item>Flamenco</item>
+        <item>Folk</item>
+        <item>Funk</item>
+        <item>Garage Rock</item>
+        <item>Gospel</item>
+        <item>Heavy Metal</item>
+        <item>Hip Hop</item>
+        <item>Indie​</item>
+        <item>Jazz​</item>
+        <item>Merengue</item>
+        <item>Polka</item>
+        <item>Pop</item>
+        <item>Punk</item>
+        <item>Ranchera</item>
+        <item>Rap</item>
+        <item>Reggae</item>
+        <item>Reggaeton</item>
+        <item>Rumba</item>
+        <item>Rhythm and Blues</item>
+        <item>Rock</item>
+        <item>Rock and Roll</item>
+        <item>Salsa</item>
+        <item>Samba</item>
+        <item>Ska</item>
+        <item>Son</item>
+        <item>Soul</item>
+        <item>Swing</item>
+        <item>Tango</item>
+        <item>Trap</item>
+        <item>Trova</item>
+        <item>Vals</item>
+        <item>Vallenato</item>
+    </string-array>
+
+    <string-array name="albums">
+        <item>Use Your Illusion II</item>
+        <item> Appetite for Destruction</item>
+        <item>Minutes to Midnight</item>
+        <item>Hybrid Theory</item>
+        <item>Meteora</item>
+    </string-array>
+
+</resources>
