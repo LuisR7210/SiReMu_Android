@@ -81,7 +81,7 @@ public class MisPlaylists extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
             }
         });
-        FloatingActionButton fab = vista.findViewById(R.id.bt_nuevo);
+        FloatingActionButton fab = vista.findViewById(R.id.btNuevo);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,14 +119,14 @@ public class MisPlaylists extends Fragment {
         public View getView(int position, View view, ViewGroup parent) {
             LayoutInflater inflater=contexto.getLayoutInflater();
             View rowView=inflater.inflate(R.layout.fila_lista_ilustracion, null,true);
-            TextView principal = (TextView) rowView.findViewById(R.id.tvPrincipal);
-            ImageView imagen = (ImageView) rowView.findViewById(R.id.imgIlustracion);
-            TextView secundario = (TextView) rowView.findViewById(R.id.tvSecundario);
-            TextView tercero = (TextView) rowView.findViewById(R.id.tvTercero);
+            TextView principal = rowView.findViewById(R.id.tvPrincipal);
+            ImageView imagen = rowView.findViewById(R.id.imgIlustracion);
+            TextView secundario = rowView.findViewById(R.id.tvSecundario);
+            TextView tercero = rowView.findViewById(R.id.tvTercero);
             principal.setText(misListas.get(position).getNombre());
             if (misListas.get(position).getEsPublica()){
                 secundario.setText("Pública");
-                tercero.setText("Likes: "+String.valueOf(misListas.get(position).getLikes()));
+                tercero.setText("Likes: "+misListas.get(position).getLikes());
             } else{
                 secundario.setText("Privada");
             }
@@ -134,6 +134,6 @@ public class MisPlaylists extends Fragment {
             Bitmap ilustracion = BitmapFactory.decodeByteArray(img, 0, img.length);
             imagen.setImageBitmap(ilustracion);
             return rowView;
-        };
+        }
     }
 }
