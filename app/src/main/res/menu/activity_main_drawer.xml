@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/grupo_consumidor"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_fondo"
+            android:title="@string/app_name"/>
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/menu_home" />
+
+        <item
+            android:id="@+id/nav_mis_canciones"
+            android:icon="@drawable/ic_library_music_black_24dp"
+            android:title="@string/menu_mis_canciones" />
+
+        <item
+            android:id="@+id/nav_playlists"
+            android:icon="@drawable/ic_queue_music_black_24dp"
+            android:title="@string/menu_playlists" />
+        <item
+            android:id="@+id/nav_me_gusta"
+            android:icon="@drawable/ic_favorite_black_24dp"
+            android:title="@string/menu_me_gusta" />
+
+        <item
+            android:id="@+id/nav_historial"
+            android:icon="@drawable/ic_history_black_24dp"
+            android:title="@string/menu_historial" />
+
+    </group>
+
+    <group
+        android:id="@+id/grupo_creador_contenido"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_creador_contenido"
+            android:icon="@drawable/ic_baseline_music_note_24"
+            android:title="@string/menu_creador_contenido" />
+    </group>
+</menu>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_fondo">
+
+    <fragment
+        android:id="@+id/nav_playlists"
+        android:name="mx.uv.siremu_android.MisPlaylists"
+        android:label="@string/menu_playlists"
+        tools:layout="@layout/fragment_mis_playlists" />
+
+    <fragment
+        android:id="@+id/nav_me_gusta"
+        android:name="mx.uv.siremu_android.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_me_gusta"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_mis_canciones"
+        android:name="mx.uv.siremu_android.MisCanciones"
+        android:label="@string/menu_mis_canciones"
+        tools:layout="@layout/fragment_mis_canciones" />
+    <fragment
+        android:id="@+id/nav_inicio"
+        android:name="mx.uv.siremu_android.Inicio"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_inicio" />
+    <fragment
+        android:id="@+id/nav_fondo"
+        android:name="mx.uv.siremu_android.FondoFragmento"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_fondo_fragmento" />
+
+</navigation>
