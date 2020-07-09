@@ -10,12 +10,24 @@
     <string name="menu_me_gusta">Me gusta</string>
     <string name="menu_mis_canciones">Mis canciones</string>
     <string name="menu_historial">Mi historial</string>
+    <string name="menu_buscar">Buscar</string>
 
     <string name="menu_creador_contenido">Creador de contenido</string>
+    <string name="menu_albumes">Mis albums</string>
+    <string name="menu_subir_cancion">Subir canción</string>
 
     <string name="excepcion_no_conexion_servidor">Error al conectar al servidor. Compruebe su conexión a internet e inténtelo de nuevo más tarde.</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">Iniciar sesión</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

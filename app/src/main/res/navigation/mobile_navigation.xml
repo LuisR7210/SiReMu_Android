@@ -10,7 +10,6 @@
         android:name="mx.uv.siremu_android.MisPlaylists"
         android:label="@string/menu_playlists"
         tools:layout="@layout/fragment_mis_playlists" />
-
     <fragment
         android:id="@+id/nav_me_gusta"
         android:name="mx.uv.siremu_android.ui.slideshow.SlideshowFragment"
@@ -31,5 +30,20 @@
         android:name="mx.uv.siremu_android.FondoFragmento"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_fondo_fragmento" />
+    <fragment
+        android:id="@+id/nav_buscar"
+        android:name="mx.uv.siremu_android.Busqueda"
+        android:label="@string/menu_buscar"
+        tools:layout="@layout/fragment_busqueda" />
+    <fragment
+        android:id="@+id/nav_albumes"
+        android:name="mx.uv.siremu_android.MisAlbums"
+        android:label="@string/menu_albumes"
+        tools:layout="@layout/fragment_mis_albums" />
+    <fragment
+        android:id="@+id/nav_subir_cancion"
+        android:name="mx.uv.siremu_android.NuevaCancion"
+        android:label="@string/menu_subir_cancion"
+        tools:layout="@layout/fragment_nueva_cancion" />
 
 </navigation>

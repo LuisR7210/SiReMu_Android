@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -20,8 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,23 +25,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.uv.manejoCanciones.*;
-import mx.uv.manejoListas.*;
 
-public class VistaPlaylist extends Fragment {
-    private ListaReproduccion miPlaylist;
+public class VistaAlbum extends Fragment {
+
+    private Album miAlbum;
     private List<Cancion> misCanciones = new ArrayList<Cancion>();
     private int idUsuario;
-    private int idListaMegusta;
     private ComunicacionAVentanaPricipal comunicacion;
 
-    public VistaPlaylist() {
+    public VistaAlbum() {
         // Required empty public constructor
     }
 
-    public VistaPlaylist(ListaReproduccion playlist, int idUsuario, int idListaMegusta) {
-        this.miPlaylist = playlist;
+    public VistaAlbum(Album album, int idUsuario) {
+        this.miAlbum = album;
         this.idUsuario = idUsuario;
-        this.idListaMegusta = idListaMegusta;
     }
 
     @Override
@@ -65,25 +59,19 @@ public class VistaPlaylist extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (comunicacion != null) comunicacion.CambiarTitulo(miPlaylist.getNombre());
-        View vista = inflater.inflate(R.layout.fragment_vista_playlist, container, false);
+        if (comunicacion != null) comunicacion.CambiarTitulo(miAlbum.getNombre());
+        View vista = inflater.inflate(R.layout.fragment_vista_album, container, false);
         MiAdaptador adaptador = new MiAdaptador(this.getActivity(), misCanciones);
-        ListView lvCanciones=(ListView)vista.findViewById(R.id.lvCanciones);
+        ListView lvCanciones = vista.findViewById(R.id.lvCanciones);
         lvCanciones.setAdapter(adaptador);
         lvCanciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ReproduccionEnCurso fragment = new ReproduccionEnCurso(misCanciones.get(position));
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack("Cancion").commit();
             }
         });
         lvCanciones.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment fragment = new PlaylistSeleccionMultiple(miPlaylist, misCanciones, idUsuario, idListaMegusta);
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack("SeleccionCanciones").commit();
                 return true;
             }
         });
@@ -94,7 +82,7 @@ public class VistaPlaylist extends Fragment {
         try {
             ManejoCancionesGrpc.ManejoCancionesBlockingStub cliente =
                     ManejoCancionesGrpc.newBlockingStub(Canales.getCanalCanciones());
-            ListaCanciones canciones = cliente.consultarCancionesLista(IdLista.newBuilder().setId(miPlaylist.getId()).build());
+            ListaCanciones canciones = cliente.consultarCancionesAlbum(Album.newBuilder().setId(miAlbum.getId()).build());
             misCanciones.addAll(canciones.getCancionesList());
         } catch (Exception e) {
             Log.d("myTag", "Error Servidor Canciones: "+e.getMessage());
@@ -115,17 +103,13 @@ public class VistaPlaylist extends Fragment {
 
         public View getView(int position, View view, ViewGroup parent) {
             LayoutInflater inflater=contexto.getLayoutInflater();
-            View rowView=inflater.inflate(R.layout.fila_lista_ilustracion, null,true);
-            TextView principal = (TextView) rowView.findViewById(R.id.tvPrincipal);
-            TextView secundario = (TextView) rowView.findViewById(R.id.tvSecundario);
-            TextView tercero = (TextView) rowView.findViewById(R.id.tvTercero);
-            ImageView imagen = (ImageView) rowView.findViewById(R.id.imgIlustracion);
+            View rowView=inflater.inflate(R.layout.fila_lista_cancion, null,true);
+            TextView principal = rowView.findViewById(R.id.tvPrincipal);
+            TextView secundario = rowView.findViewById(R.id.tvSecundario);
+            TextView tercero = rowView.findViewById(R.id.tvTercero);
             principal.setText(misCanciones.get(position).getNombre());
             secundario.setText(misCanciones.get(position).getArtista());
             tercero.setText(misCanciones.get(position).getDuracion());
-            byte[] img = misCanciones.get(position).getAlbum().getIlustracion().toByteArray();
-            Bitmap ilustracion = BitmapFactory.decodeByteArray(img, 0, img.length);
-            imagen.setImageBitmap(ilustracion);
             return rowView;
         };
     }

@@ -17,7 +17,7 @@ service ManejoCanciones {
   rpc ConsultarCancionesLista(IdLista) returns (ListaCanciones);
   rpc GenerarRadio(Cancion) returns (ListaCanciones);
   rpc ModificarAlbum(AlbumAG) returns (RespuestaCanciones);
-  rpc ReproducirCancion(Cancion) returns (stream CancionPP);
+  rpc ReproducirCancion(CancionAG) returns (stream CancionPP);
   rpc RegistrarCancion(CancionAG) returns (RespuestaCanciones);
   rpc SubirCancion(stream CancionPP) returns (RespuestaCanciones);
 }
@@ -34,7 +34,6 @@ message AlbumAG {
 message CancionAG {
   int32 idUsuario = 1;
   Cancion cancion = 2;
-  int32 idAlbum = 3;
 }
 
 message IdUsuario {

@@ -13,7 +13,10 @@
             android:id="@+id/nav_inicio"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
-
+        <item
+            android:id="@+id/nav_buscar"
+            android:icon="@drawable/ic_baseline_search_24"
+            android:title="@string/menu_buscar" />
         <item
             android:id="@+id/nav_mis_canciones"
             android:icon="@drawable/ic_library_music_black_24dp"
@@ -40,7 +43,14 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_creador_contenido"
-            android:icon="@drawable/ic_baseline_music_note_24"
             android:title="@string/menu_creador_contenido" />
+        <item
+            android:id="@+id/nav_albumes"
+            android:icon="@drawable/ic_baseline_local_play_24"
+            android:title="@string/menu_albumes" />
+        <item
+            android:id="@+id/nav_subir_cancion"
+            android:icon="@drawable/ic_baseline_playlist_add_24"
+            android:title="@string/menu_subir_cancion" />
     </group>
 </menu>
