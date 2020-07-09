@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+    siremudb:
+        build:
+            context: .
+            dockerfile: ./database/Dockerfile
+        expose:
+            - "1433"
+        ports:
+            - "0.0.0.0:1443:1433"
+        networks:
+            netsiremu:
+                ipv4_address: 172.250.6.3
+
+    siremuserver:
+        build:
+            context: .
+            dockerfile: ./backend/Dockerfile
+        expose:
+            - "25511"
+        ports:
+            - "0.0.0.0:1444:25511"
+        networks:
+            netsiremu:
+                ipv4_address: 172.250.6.4
+
+networks:
+    netsiremu:
+        external: true
