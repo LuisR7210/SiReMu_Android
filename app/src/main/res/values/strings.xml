@@ -30,4 +30,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="compa_ia_discografica">Compañia discografica</string>
+    <string name="fecha_de_lanzamiento">Fecha de lanzamiento</string>
+    <string name="selecciona_una_fecha">Selecciona una fecha</string>
+    <string name="agregar_lbum">Agregar Álbum</string>
+    <string name="nombre_del_lbum">Nombre del álbum</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="agregar">Agregar</string>
+    <string name="imagen">Imagen</string>
+    <string name="subir_archivo">Subir archivo</string>
 </resources>

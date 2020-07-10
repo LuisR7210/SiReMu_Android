@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -20,8 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -68,7 +64,7 @@ public class VistaPlaylist extends Fragment {
         if (comunicacion != null) comunicacion.CambiarTitulo(miPlaylist.getNombre());
         View vista = inflater.inflate(R.layout.fragment_vista_playlist, container, false);
         MiAdaptador adaptador = new MiAdaptador(this.getActivity(), misCanciones);
-        ListView lvCanciones=(ListView)vista.findViewById(R.id.lvCanciones);
+        ListView lvCanciones=(ListView)vista.findViewById(R.id.lvBuscados);
         lvCanciones.setAdapter(adaptador);
         lvCanciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -81,7 +77,7 @@ public class VistaPlaylist extends Fragment {
         lvCanciones.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment fragment = new PlaylistSeleccionMultiple(miPlaylist, misCanciones, idUsuario, idListaMegusta);
+                Fragment fragment = new PlaylistSeleccionMultiple(misCanciones, idUsuario, idListaMegusta);
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack("SeleccionCanciones").commit();
                 return true;

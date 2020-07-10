@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package mnjListas;
+
+service ManejoListas {
+  rpc AgregarQuitarCancionesLista(ListaAA) returns (RespuestaListas);
+  rpc AgregarListaAMeGusta (ListaAG) returns (RespuestaListas);
+  rpc BuscarListas(NombreLista) returns (ListaListas);
+  rpc ConsultarMisListas(IdUsuario) returns(ListaListas);
+  rpc ConsultarMisListasAgregadas(IdUsuario) returns(ListaListas);
+  rpc ConsultarMisListasDefault(IdUsuario) returns(ListaListas);
+  rpc CrearListaReproduccion(ListaAG) returns(RespuestaListas);
+  rpc EliminarListaReproduccion(ListaAG) returns(RespuestaListas);
+}
+
+message ListaAG {
+  int32 idUsuario = 1;
+  ListaReproduccion listaAAgregar = 2;
+}
+
+message RespuestaListas {
+  bool respuesta = 1;
+  string codigoError = 2;
+}
+
+message ListaAA {
+  int32 idUsuario = 1;
+  int32 idLista = 2;
+  repeated int32 idCanciones = 3;
+  bool agregar = 4;
+}
+
+message NombreLista {
+  string nombre = 1;
+}
+
+message ListaListas {
+  repeated ListaReproduccion listas = 1;
+}
+
+message IdUsuario {
+  int32 id = 1;
+}
+
+message ListaReproduccion {
+  int32 id = 1;
+  string descripcion = 2;
+  bool esDefault = 3;
+  bool esPublica = 4;
+  bytes ilustracion = 5;
+  string extensionIlustracion = 6;
+  int32 likes = 7;
+  string nombre = 8;
+  int32 idCreador = 9;
+  string nombreCreador = 10;
+}

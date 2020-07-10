@@ -2,12 +2,9 @@ package mx.uv.siremu_android;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -62,7 +58,7 @@ public class VistaAlbum extends Fragment {
         if (comunicacion != null) comunicacion.CambiarTitulo(miAlbum.getNombre());
         View vista = inflater.inflate(R.layout.fragment_vista_album, container, false);
         MiAdaptador adaptador = new MiAdaptador(this.getActivity(), misCanciones);
-        ListView lvCanciones = vista.findViewById(R.id.lvCanciones);
+        ListView lvCanciones = vista.findViewById(R.id.lvBuscados);
         lvCanciones.setAdapter(adaptador);
         lvCanciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

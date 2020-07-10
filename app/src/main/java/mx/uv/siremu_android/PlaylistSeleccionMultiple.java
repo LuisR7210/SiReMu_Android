@@ -1,25 +1,22 @@
 package mx.uv.siremu_android;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -28,6 +25,7 @@ import java.util.List;
 
 import mx.uv.manejoListas.*;
 import mx.uv.manejoCanciones.*;
+import mx.uv.manejoListas.IdUsuario;
 import mx.uv.siremu_android.adaptadores.FilaSeleccionable;
 
 public class PlaylistSeleccionMultiple extends Fragment {
@@ -36,13 +34,13 @@ public class PlaylistSeleccionMultiple extends Fragment {
     private int idUsuario;
     private int idListaMegusta;
     private List<Integer> cancionesSeleccionadas = new ArrayList<>();
+    private List<ListaReproduccion> misListas = new ArrayList<ListaReproduccion>();
 
     public PlaylistSeleccionMultiple() {
         // Required empty public constructor
     }
 
-    public PlaylistSeleccionMultiple(ListaReproduccion playlist, List<Cancion> canciones, int idUsuario, int idListaMegusta) {
-        this.miPlaylist = playlist;
+    public PlaylistSeleccionMultiple(List<Cancion> canciones, int idUsuario, int idListaMegusta) {
         this.misCanciones = canciones;
         this.idUsuario = idUsuario;
         this.idListaMegusta = idListaMegusta;
@@ -61,22 +59,49 @@ public class PlaylistSeleccionMultiple extends Fragment {
         for (Cancion cancion : misCanciones) {
             filasCanciones.add(new FilaSeleccionable(cancion.getNombre(), cancion.getArtista(), cancion.getDuracion()));
         }
-        final ListView lvCanciones=(ListView)vista.findViewById(R.id.lvCanciones);
+        final ListView lvCanciones=(ListView)vista.findViewById(R.id.lvBuscados);
         MiAdaptador adaptador = new MiAdaptador(this.getActivity(), filasCanciones, lvCanciones);
         lvCanciones.setAdapter(adaptador);
         ImageButton btMeGusta = vista.findViewById(R.id.ibtMeGusta);
         btMeGusta.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                AgregarCancionesAMeGusta();
+                AgregarCancionesALista(idListaMegusta);
+            }
+        });
+        ImageButton btAgregarAPlaylists = vista.findViewById(R.id.ibtAgregarPlaylists);
+        btAgregarAPlaylists.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                final ArrayAdapter<String> adaptador = CargarAdaptadorListas();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Agregar a:")
+                        .setNegativeButton("Cancelar", null)
+                        .setAdapter(adaptador, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                int idLista = BuscarLista(adaptador.getItem(which));
+                                AgregarCancionesALista(idLista);
+                            }
+                        })
+                        .show();
             }
         });
         return vista;
     }
 
+    private int BuscarLista(String nombre){
+        for (ListaReproduccion lista : misListas) {
+            if (lista.getNombre().contentEquals(nombre)){
+                return lista.getId();
+            }
+        }
+        return 1;
+    }
+
     private List<Integer> ObtenerCancionesSeleccionadas(){
         List<Integer> listaCanciones = new ArrayList<>();
-        ListView lvCanciones = this.getView().findViewById(R.id.lvCanciones);
+        ListView lvCanciones = this.getView().findViewById(R.id.lvBuscados);
         SparseBooleanArray checked = lvCanciones.getCheckedItemPositions();
         for (int i = 0; i < lvCanciones.getAdapter().getCount(); i++) {
             if (checked.get(i)) {
@@ -86,17 +111,38 @@ public class PlaylistSeleccionMultiple extends Fragment {
         return listaCanciones;
     }
 
-    private void AgregarCancionesAMeGusta(){
+    private void AgregarCancionesALista(int idLista){
         List<Integer> listaCanciones = new ArrayList<>();
         listaCanciones = this.ObtenerCancionesSeleccionadas();
+        if (listaCanciones.size() == 0){
+            return;
+        }
         try {
             ManejoListasGrpc.ManejoListasBlockingStub cliente = ManejoListasGrpc.newBlockingStub(Canales.getCanalListas());
             RespuestaListas respuesta = cliente.agregarQuitarCancionesLista(
-                    ListaAA.newBuilder().setAgregar(true).setIdLista(idListaMegusta).setIdUsuario(idUsuario).addAllIdCanciones(listaCanciones).build());
+                    ListaAA.newBuilder().setAgregar(true).setIdLista(idLista).setIdUsuario(idUsuario).addAllIdCanciones(listaCanciones).build());
+            Snackbar.make(this.getActivity().findViewById(R.id.drawer_layout), "Canciones Añadidas", Snackbar.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.d("myTag", "Error Servidor Listas: "+e.getMessage());
             Snackbar.make(this.getActivity().findViewById(R.id.drawer_layout), getText(R.string.excepcion_no_conexion_servidor), Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    private ArrayAdapter<String> CargarAdaptadorListas(){
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_singlechoice);
+        try {
+            ManejoListasGrpc.ManejoListasBlockingStub cliente =
+                    ManejoListasGrpc.newBlockingStub(Canales.getCanalListas());
+            ListaListas listas = cliente.consultarMisListas(IdUsuario.newBuilder().setId(idUsuario).build());
+            misListas.addAll(listas.getListasList());
+            for (ListaReproduccion lista : listas.getListasList()) {
+                arrayAdapter.add(lista.getNombre());
+            }
+        } catch (Exception e) {
+            Log.d("myTag", "Error Servidor Listas: "+e.getMessage());
+            Snackbar.make(this.getActivity().findViewById(R.id.drawer_layout), getText(R.string.excepcion_no_conexion_servidor), Snackbar.LENGTH_LONG).show();
+        }
+        return arrayAdapter;
     }
 
     private class MiAdaptador extends ArrayAdapter<FilaSeleccionable> {

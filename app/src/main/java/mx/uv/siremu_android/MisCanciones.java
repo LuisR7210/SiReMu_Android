@@ -69,7 +69,7 @@ public class MisCanciones extends Fragment {
         View vista = inflater.inflate(R.layout.fragment_mis_canciones, container, false);
         this.CargarCanciones();
         MiAdaptador adaptador = new MiAdaptador(this.getActivity(), misCanciones);
-        ListView lvCanciones=(ListView)vista.findViewById(R.id.lvCanciones);
+        ListView lvCanciones=(ListView)vista.findViewById(R.id.lvBuscados);
         lvCanciones.setAdapter(adaptador);
         return vista;
     }

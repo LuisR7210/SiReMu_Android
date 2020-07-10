@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "mx.uv.manejoCanciones";
+option java_outer_classname = "CancionesProto";
+option objc_class_prefix = "MC";
+
+package mnjCanciones;
+
+service ManejoCanciones {
+  rpc BuscarCanciones(NombreCancion) returns (ListaCanciones);
+  rpc CrearAlbum(AlbumAG) returns (RespuestaCanciones);
+  rpc ConsultarMisCanciones(IdUsuario) returns (ListaCanciones);
+  rpc ConsultarCancionesEnPromocion(IdUsuario) returns (ListaCanciones);
+  rpc ConsultarAlbums(IdUsuario) returns (ListaAlbums);
+  rpc ConsultarCancionesAlbum(Album) returns (ListaCanciones);
+  rpc ConsultarCancionesLista(IdLista) returns (ListaCanciones);
+  rpc GenerarRadio(Cancion) returns (ListaCanciones);
+  rpc ModificarAlbum(AlbumAG) returns (RespuestaCanciones);
+  rpc ReproducirCancion(CancionAG) returns (stream CancionPP);
+  rpc RegistrarCancion(CancionAG) returns (RespuestaCanciones);
+  rpc SubirCancion(stream CancionPP) returns (RespuestaCanciones);
+}
+
+message NombreCancion {
+  string nombre = 1;
+}
+
+message AlbumAG {
+  int32 idUsuario = 1;
+  Album album = 2;
+}
+
+message CancionAG {
+  int32 idUsuario = 1;
+  Cancion cancion = 2;
+}
+
+message IdUsuario {
+  int32 id = 1;
+}
+
+message IdLista {
+  int32 id = 1;
+}
+
+message ListaCanciones {
+  repeated Cancion canciones = 1;
+}
+
+message ListaAlbums {
+  repeated Album albums = 1;
+}
+
+message RespuestaCanciones {
+  bool respuesta = 1;
+  string codigoError = 2;
+}
+
+message CancionPP {
+  int32 idCancion = 1;
+  bytes contenido = 2;
+}
+
+message Album {
+  int32 id = 1;
+  string compania = 2;
+  string fechaLanzamiento = 3;
+  bytes ilustracion = 4;
+  string extensionIlustracion = 5;
+  string nombre = 6;
+}
+
+message Cancion {
+  int32 id = 1;
+  string artista = 2;
+  string duracion = 3;
+  bool esPRomocion = 4;
+  bool esPublica = 5;
+  string genero = 6;
+  int32 likes = 7;
+  string nombre = 8;
+  Album album = 9;
+}

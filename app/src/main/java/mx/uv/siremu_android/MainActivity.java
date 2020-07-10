@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_buscar:
                 title = R.string.menu_buscar;
-                fragment = Busqueda.newInstance("", "");
+                fragment = Busqueda.newInstance(1, listaDefault.getId());
                 break;
             case R.id.nav_mis_canciones:
                 title = R.string.menu_mis_canciones;
