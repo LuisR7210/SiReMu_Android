@@ -18,6 +18,7 @@
 
     <string name="excepcion_no_conexion_servidor">Error al conectar al servidor. Compruebe su conexión a internet e inténtelo de nuevo más tarde.</string>
 
+    <string name="excepcion_no_archivo">Error al cargar la imagen seleccionada. Busque otra imagen e inténtelo de nuevo.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

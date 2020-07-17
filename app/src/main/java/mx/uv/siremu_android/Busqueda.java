@@ -144,7 +144,7 @@ public class Busqueda extends Fragment {
             lvBuscados.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ReproduccionEnCurso fragment = new ReproduccionEnCurso(misCanciones.get(position));
+                    ReproduccionEnCurso fragment = new ReproduccionEnCurso(misCanciones.get(position), misCanciones);
                     FragmentManager fragmentManager = getParentFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack("Cancion").commit();
                 }

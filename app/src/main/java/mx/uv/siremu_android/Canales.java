@@ -7,6 +7,7 @@ public class Canales {
 
     public static ManagedChannel canalListas = ManagedChannelBuilder.forAddress("10.0.2.2", 25111).usePlaintext().build();
     public static ManagedChannel canalCanciones = ManagedChannelBuilder.forAddress("10.0.2.2", 25112).usePlaintext().build();
+    public static ManagedChannel canalCuentas = ManagedChannelBuilder.forAddress("10.0.2.2", 25113).usePlaintext().build();
 
     public static ManagedChannel getCanalListas() {
         return canalListas;
@@ -14,5 +15,9 @@ public class Canales {
 
     public static ManagedChannel getCanalCanciones() {
         return canalCanciones;
+    }
+
+    public static ManagedChannel getCanalCuentas() {
+        return canalCuentas;
     }
 }

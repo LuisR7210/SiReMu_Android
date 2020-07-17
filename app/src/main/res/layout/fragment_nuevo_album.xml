@@ -18,7 +18,8 @@
         android:textColorHint="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:backgroundTint="@android:color/holo_blue_bright"/>
 
     <TextView
         android:id="@+id/textView3"
@@ -30,7 +31,8 @@
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fechaTP" />
+        app:layout_constraintTop_toBottomOf="@+id/fechaTP"
+        />
 
     <TextView
         android:id="@+id/textView5"
@@ -74,7 +76,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:backgroundTint="@android:color/holo_blue_bright"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -89,12 +92,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btAgregar"
         android:layout_width="114dp"
         android:layout_height="59dp"
         android:layout_marginBottom="16dp"
         android:background="#147F8F"
-        android:onClick="agregarAlbum"
         android:text="@string/agregar"
         android:textColor="@android:color/white"
         android:textSize="16sp"

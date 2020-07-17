@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -62,6 +63,13 @@ public class PlaylistSeleccionMultiple extends Fragment {
         final ListView lvCanciones=(ListView)vista.findViewById(R.id.lvBuscados);
         MiAdaptador adaptador = new MiAdaptador(this.getActivity(), filasCanciones, lvCanciones);
         lvCanciones.setAdapter(adaptador);
+        ImageButton btRadio = vista.findViewById(R.id.ibtGenerarEstacion);
+        btRadio.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                VerEstacionRadio();
+            }
+        });
         ImageButton btMeGusta = vista.findViewById(R.id.ibtMeGusta);
         btMeGusta.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -143,6 +151,19 @@ public class PlaylistSeleccionMultiple extends Fragment {
             Snackbar.make(this.getActivity().findViewById(R.id.drawer_layout), getText(R.string.excepcion_no_conexion_servidor), Snackbar.LENGTH_LONG).show();
         }
         return arrayAdapter;
+    }
+
+    private void VerEstacionRadio(){
+        ListView lvCanciones = this.getView().findViewById(R.id.lvBuscados);
+        SparseBooleanArray checked = lvCanciones.getCheckedItemPositions();
+        for (int i = 0; i < lvCanciones.getAdapter().getCount(); i++) {
+            if (checked.get(i)) {
+                Fragment fragment = new EstacionRadio(misCanciones.get(i), idUsuario, idListaMegusta);
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+                return;
+            }
+        }
     }
 
     private class MiAdaptador extends ArrayAdapter<FilaSeleccionable> {

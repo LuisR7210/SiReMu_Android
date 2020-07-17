@@ -85,7 +85,7 @@ public class MisPlaylists extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new NuevaLista();
+                Fragment fragment = new NuevaLista(idUsuario, idListaMegusta);
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
             }

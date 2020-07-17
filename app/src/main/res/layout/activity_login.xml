@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login"
-    android:background="@color/fondoLogin" >
+    android:background="@color/fondoPantalla" >
 
     <EditText
         android:id="@+id/etContraseña"
@@ -21,7 +21,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"
-        android:paddingTop="0dp"/>
+        android:paddingTop="0dp"
+        android:backgroundTint="@android:color/holo_blue_bright"/>
 
     <EditText
         android:id="@+id/etBusqueda"
@@ -37,7 +38,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         android:paddingStart="0dp"
         android:paddingEnd="0dp"
-        android:paddingTop="0dp"/>
+        android:paddingTop="0dp"
+        android:backgroundTint="@android:color/holo_blue_bright"/>
 
     <ImageView
         android:id="@+id/imageView2"

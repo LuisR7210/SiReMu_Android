@@ -2,6 +2,7 @@ package mx.uv.siremu_android;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,29 +17,47 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.protobuf.ByteString;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.xml.transform.Result;
+
+import mx.uv.manejoCanciones.Album;
+import mx.uv.manejoCanciones.AlbumAG;
+import mx.uv.manejoCanciones.ManejoCancionesGrpc;
+import mx.uv.manejoCanciones.RespuestaCanciones;
 
 public class NuevoAlbum extends Fragment {
 
     private int idUsuario;
-
+    private ComunicacionAVentanaPricipal comunicacion;
     ImageView ivFoto;
     Button btnSeleccionarImagen;
 
@@ -48,14 +67,12 @@ public class NuevoAlbum extends Fragment {
     String CARPETA_RAIZ = "MisFotosApp";
     String CARPETAS_IMAGENES = "imagenes";
     String RUTA_IMAGEN = CARPETA_RAIZ + CARPETAS_IMAGENES;
-    String path;
+    String fecha;
 
     private static final String TAG = "MainActivity";
 
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-
-    private ComunicacionAVentanaPricipal comunicacion;
 
     public NuevoAlbum(){
 
@@ -112,8 +129,8 @@ public class NuevoAlbum extends Fragment {
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
-
-                String date = month + "/" + day + "/" + year;
+                fecha = year + "-" + month + "-" + day;
+                String date = day + "/" + month + "/" + year;
                 mDisplayDate.setText(date);
             }
         };
@@ -123,11 +140,18 @@ public class NuevoAlbum extends Fragment {
                     new String[]{Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
-
         btnSeleccionarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 seleccionarImagen();
+            }
+        });
+
+        Button btAgregar = vista.findViewById(R.id.btAgregar);
+        btAgregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agregarAlbum();
             }
         });
 
@@ -142,11 +166,10 @@ public class NuevoAlbum extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode == SELEC_IMAGEN) {
             imagenUri = data.getData();
             ivFoto.setImageURI(imagenUri);
-            ivFoto.setImageBitmap(reduceBitmap(requireContext(), imagenUri.toString(), 512,      512));
+            ivFoto.setImageBitmap(reduceBitmap(requireContext(), imagenUri.toString(),512,512));
         }
     }
 
@@ -169,15 +192,39 @@ public class NuevoAlbum extends Fragment {
         }
     }
 
-    public void agregarAlbum(View view) {
-        boolean validacion = ValidarImagen();
-        if(validacion){
-            Toast toast = Toast.makeText(getActivity(), "validacion exitosa", Toast.LENGTH_SHORT);
-            toast.show();
-        }else{
-            Toast toast = Toast.makeText(getActivity(), "error en la validacion", Toast.LENGTH_SHORT);
-            toast.show();
+    public void agregarAlbum() {
+        try {
+            File imagen = new File(imagenUri.getPath());
+            ContentResolver cR = getContext().getContentResolver();
+            InputStream inputStream = cR.openInputStream(imagenUri);
+            byte[] archivo = IOUtils.toByteArray(inputStream);
+            inputStream.close();
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            String extensionArchivo = "." + mime.getExtensionFromMimeType(cR.getType(imagenUri));
+            EditText nombre = getView().findViewById(R.id.nombreAlbumTF);
+            EditText compania = getView().findViewById(R.id.companiaTF);
+            Album nuevoAlbum = Album.newBuilder()
+                    .setNombre(nombre.getText().toString())
+                    .setFechaLanzamiento(fecha)
+                    .setIlustracion(ByteString.copyFrom(archivo))
+                    .setCompania(compania.getText().toString())
+                    .setExtensionIlustracion(extensionArchivo)
+                    .build();
+            ManejoCancionesGrpc.ManejoCancionesBlockingStub cliente =
+                    ManejoCancionesGrpc.newBlockingStub(Canales.getCanalCanciones());
+            RespuestaCanciones respuesta = cliente.crearAlbum(AlbumAG.newBuilder().setIdUsuario(idUsuario).setAlbum(nuevoAlbum).build());
+            if (respuesta.getRespuesta()){
+                MisAlbums fragment = MisAlbums.newInstance(idUsuario);
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+            }
+        } catch (FileNotFoundException io) {
+            Snackbar.make(this.getActivity().findViewById(R.id.drawer_layout), getText(R.string.excepcion_no_archivo), Snackbar.LENGTH_LONG).show();
+        } catch (Exception ex){
+            Log.d(TAG, ex.getMessage());
+            Snackbar.make(this.getActivity().findViewById(R.id.drawer_layout), getText(R.string.excepcion_no_conexion_servidor), Snackbar.LENGTH_LONG).show();
         }
+
     }
 
     private boolean ValidarImagen() {
@@ -192,13 +239,13 @@ public class NuevoAlbum extends Fragment {
             if(c=='.'){
                 b1=true;
             }
-            if(c=='j' && b1==true){
+            if(c=='j' && b1){
                 b2=true;
             }
-            if(c=='p' && b2==true){
+            if(c=='p' && b2){
                 b3=true;
             }
-            if(c=='g' && b3==true){
+            if(c=='g' && b3){
                 b4=true;
             }
         }

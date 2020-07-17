@@ -10,19 +10,41 @@
         android:id="@+id/ivPortada"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <SeekBar
-        android:id="@+id/sbReproduccion"
-        android:layout_width="350dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivPortada"/>
+    <TextView
+        android:id="@+id/tvArtista"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/ivPortada"
+        app:layout_constraintTop_toBottomOf="@+id/ivPortada" />
+
+    <TextView
+        android:id="@+id/tvAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/tvArtista"
+        app:layout_constraintTop_toBottomOf="@+id/tvArtista" />
+
+    <TextView
+        android:id="@+id/tvGenero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tvAlbum"
+        app:layout_constraintTop_toBottomOf="@+id/tvAlbum" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
