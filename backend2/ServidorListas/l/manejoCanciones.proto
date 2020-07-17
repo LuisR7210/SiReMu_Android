@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+service manejoCanciones {
+  rpc BuscarCanciones(NombreCancion) returns (ListaCanciones){}
+  rpc CrearAlbum(Album) returns (RespuestaRegistro){}
+  rpc GenerarRadio(idCancion) returns (ListaCanciones){}
+  rpc modificarAlbum(Album) returns (RespuestaRegistro){}
+  rpc ReproducirCancion(idCancion) returns (stream CancionPP){}
+  rpc subirCancion(Cancion) returns (RespuestaRegistro){}
+}
+
+message NombreCancion {
+  string nombre = 1;
+}
+
+message ListaCanciones {
+  repeated string nombre = 1;
+  repeated int32 id = 2;
+}
+
+message RespuestaRegistro {
+  bool respuesta = 1;
+}
+
+message Album {
+  string compania = 1;
+  string fechaLanzamiento = 2;
+  bytes ilustracion = 3;
+  string nombre = 4;
+  idUsuario = 5;
+}
+
+message idCancion {
+  int32 id = 1;
+}
+
+message CancionPP {
+  bytes contenido = 1;
+}
+
+message Cancion {
+  string artista = 1;
+  string duracion = 2;
+  bool esPRomocion = 3;
+  bool esPublica = 4;
+  string genero = 5;
+  int32 likes = 6;
+  string nombre = 7;
+  int32 idAlbum = 8;
+  int32 idUsuario = 9;
+}
+
