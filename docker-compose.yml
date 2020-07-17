@@ -5,26 +5,37 @@ services:
         build:
             context: .
             dockerfile: ./database/Dockerfile
-        expose:
-            - "1433"
         ports:
-            - "0.0.0.0:1443:1433"
-        networks:
-            netsiremu:
-                ipv4_address: 172.250.6.3
+            - "1443:1433"
+        volumes:
+            - sqlvolume:/var/opt/mssql
 
-    siremuserver:
+    siremuservercanciones:
         build:
             context: .
             dockerfile: ./backend/Dockerfile
-        expose:
-            - "25511"
         ports:
-            - "0.0.0.0:1444:25511"
-        networks:
-            netsiremu:
-                ipv4_address: 172.250.6.4
+            - "25112:25112"
+        volumes:
+            - /usr/src/
 
-networks:
-    netsiremu:
-        external: true
+    siremuserverlistas:
+        build:
+            context: .
+            dockerfile: ./backend2/Dockerfile
+        ports:
+            - "25111:25111"
+        volumes:
+            - /usr/src/
+
+    siremuservercuentas:
+        build:
+            context: .
+            dockerfile: ./backend3/Dockerfile
+        ports:
+            - "25113:25113"
+        volumes:
+            - /usr/src/
+            
+volumes:
+    sqlvolume:
